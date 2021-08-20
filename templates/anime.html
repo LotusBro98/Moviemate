@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ anime.name }} - watch together on Animate</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+<h1><a href="/">Home</a></h1>
+
+<h1>{{ episode }}</h1>
+
+<video
+        src="{{ episode.url }}"
+        width="100%"
+        controls="controls"
+        id="mainPlayer"
+></video>
+
+<ol>
+{% for ep in episodes %}
+    <li><a href="" onclick="changeAnime({{ anime.id }}, {{ ep.ordinal }});return false;">{{ ep }}</a></li>
+{% endfor %}
+</ol>
+<br/>
+
+
+
+{% if invitations %}
+    <h1>Invitations</h1>
+    <ul>
+    {% for inv in invitations %}
+        <li>{{ inv | safe }}</li>
+        <a href="" onclick="joinParty({{ inv.party.id }});return false;">Join</a>
+    {% endfor %}
+    </ul>
+    <br/>
+{% endif %}
+
+{% if party %}
+    <h1>Current Party</h1>
+    <p>{{ user.party | safe }}
+        <a href="" onclick="leaveParty();return false;">Leave</a>
+    </p>
+{% else %}
+    <h2><a href="" onclick="createParty();return false;">Create party</a></h2>
+{% endif %}
+
+
+<h1>Users watching this</h1>
+<ul>
+{% for us in users_watching %}
+    <li>
+        {{ us | safe }}
+{#        {% if party and user != us %}#}
+        {% if user != us %}
+            <a href="" onclick="inviteUser({{ us.id }});return false;">Invite</a>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+<br/>
+
+<h1>Parties, watching this</h1>
+<ul>
+{% for pt in parties_watching %}
+    <li>{{ pt | safe }}</li>
+{% endfor %}
+</ul>
+<br/>
+
+<script src="js/anime.js"></script>
+<script>
+    videoElement.addEventListener('play', onPlay,true);
+    videoElement.addEventListener('pause', onPause,true);
+
+    listen();
+    requestUpdate();
+</script>
+</body>
+</html>

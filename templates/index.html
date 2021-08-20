@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animate</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="js/anime.js"></script>
+</head>
+<body>
+
+<h1>Анимешки</h1>
+<ol>
+{% for anime in anime_list %}
+{#    <li><a href="/watch?anime={{ anime.id }}&sid={{ request.GET.sid }}">{{ anime }}</a></li>#}
+    <li><a href="/watch?anime={{ anime.id }}&sid={{ request.GET.sid }}" onclick="changeAnime({{ anime.id }}, 1);">{{ anime }}</a></li>
+{% endfor %}
+</ol>
+<br/>
+
+<h1>Это вы :3</h1>
+<p>{{ user | safe }}</p>
+{% if not user.vk %}
+    <p>Logged in as guest. <a href="/api/login?vk=1">Login with VK</a></p>
+{% endif %}
+
+<h1>Users</h1>
+<ul>
+{% for us in users %}
+    <li>
+        {{ us | safe }}
+        {% if party and user != us %}
+            <a href="" onclick="inviteUser({{ us.id }});return false;">Invite</a>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+<br/>
+<h1>Parties</h1>
+<ul>
+{% for pt in parties %}
+    <li>{{ pt | safe }}</li>
+{% endfor %}
+</ul>
+<br/>
+</body>
+</html>
